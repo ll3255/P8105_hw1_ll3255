@@ -1,0 +1,9 @@
+---
+title: "P8105_HW1_LL3255"
+author: "Laura Lynch"
+date: 2019-09-16
+output: github_document
+---
+  
+Homework 1, R Markdown document for problem 0.1.
+
