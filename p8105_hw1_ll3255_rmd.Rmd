@@ -34,7 +34,7 @@ Here's a **code chunk** is attempting to convert variable types:
 coerce_log_num = as.numeric(pull(hw1_df, prob1_logic))
 ```
 ## Character to numeric
-```{r}
+```{r, eval= false}
 coerce_char_num = as.numeric(pull(hw1_df, prob1_char))
 ```
 ## Factor to numeric
@@ -50,7 +50,7 @@ Here's a second **code chunk** converting and manipulating the variables further
 coerce_log_num*pull(hw1_df, prob1_samp)
 ```
 ## converting the logical vector to a factor and multiplying the random sample by the result
-```{r}
+```{r, eval= false}
 coerce_log_fac = as.factor(pull(hw1_df, prob1_logic))
   coerce_log_fac*pull(hw1_df, prob1_samp)
 ```
@@ -76,18 +76,18 @@ PASTE IN-LINE CODE BACK IN HERE:
 
 Here's a **code chunk** of a scatterplot for y vs. x with logical color points:
 ```{r}
-ggplot(prob2_df,aes(x=x, y=y, colors=prob2_logic)) + geom_point()
+ggplot(prob2_df, aes(x = x, y = y)) + geom_point(aes (color = prob2_logic)) + labs(title ="X vs. Y by Logic Function x + y >1")
 ```
 
 
 
 This one has numeric color points:
-```{r, eval= false}
-ggplot(prob2_df, aes(x = x, y = y)) + geom_point(log_to_num)
+```{r}
+ggplot(prob2_df, aes(x = x, y = y)) + geom_point(aes (color = log_to_num)) + labs(title ="X vs. Y by Numeric Variable")
 ```
-This one has factorr color points:
-```{r, eval= false}
-ggplot(prob2_df, aes(x = x, y = y)) + geom_point(log_to_fac)
+This one has factor color points:
+```{r}
+ggplot(prob2_df, aes(x = x, y = y)) + geom_point(aes (color = log_to_fac)) + labs(title ="X vs. Y by Factor Variable")
 ```
 
 Finally export the first scatterplot to the project directory using ggsave.
