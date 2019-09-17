@@ -5,12 +5,12 @@ date: "9/16/2019"
 output: html_document
 ---
 
-```{r}
+```{r, eval= FALSE}
 library(tidyverse)
 ```
 
 #__Problem 1:__ 
-Here's a **code chunk** that samples from a normal distribution:
+Here's a code chunk that samples from a normal distribution:
 ```{r}
 hw1_df = tibble(
   prob1_samp = rnorm(8),
@@ -21,20 +21,31 @@ hw1_df = tibble(
 )
 ```
 
-Here's a **code chunk** that is attempting to take the mean of each variable in the data frame above:
+
+
+Here's a code chunk that is attempting to take the mean of each variable in the data frame above:
 ```{r}
 mean(pull(hw1_df, prob1_samp))
+mean(pull(hw1_df, prob1_positive))
+mean(pull(hw1_df, prob1_logic))
+mean(pull(hw1_df, prob1_char))
+mean(pull(hw1_df, prob1_factor))
 ```
-What works: The result is a numeric value= 0.05569913
-What doesn't: There is no result for non-numeric variables?
+  prob1_samp WORKS
+  prob1_positive
+  prob1_logic 
+  prob1_char 
+  prob1_factor
 
-Here's a **code chunk** is attempting to convert variable types:
+
+
+Here's a code chunk is attempting to convert variable types:
 ## Logical to numeric
 ```{r}
 coerce_log_num = as.numeric(pull(hw1_df, prob1_logic))
 ```
 ## Character to numeric
-```{r, eval= false}
+```{r, eval= FALSE}
 coerce_char_num = as.numeric(pull(hw1_df, prob1_char))
 ```
 ## Factor to numeric
@@ -44,24 +55,31 @@ coerce_fac_num = as.numeric(pull(hw1_df, prob1_factor))
 * What happens and why: Logical to numeric became binary 1s and 0s/ Character to numeric became all "NA". Factor to numeric also became all "NA".
 * Does this explain what happenned to the mean before: The mean was being calculated from the binary coded variables of 1 and 0. 
 
-Here's a second **code chunk** converting and manipulating the variables further:
-## converting the logical vector to numeric and multiplying the random sample by the result
+
+
+Here's a second code chunk converting and manipulating the variables further:
+## 1. converting the logical vector to numeric and multiplying the random sample by the result
 ```{r}
 coerce_log_num*pull(hw1_df, prob1_samp)
 ```
-## converting the logical vector to a factor and multiplying the random sample by the result
-```{r, eval= false}
+## 2. **FIX THIS LAURA: converting the logical vector to a factor and multiplying the random sample by the result**
+```{r}
 coerce_log_fac = as.factor(pull(hw1_df, prob1_logic))
   coerce_log_fac*pull(hw1_df, prob1_samp)
 ```
-## converting the logical vector to a factor and then to numeric and multiplying the random sample by the result
+Result: Not meaningful factors, all are NA
+
+## 3. **FIX THIS LAURA: converting the logical vector to a factor and then to numeric and multiplying the random sample by the result**
 ```{r}
-coerce_log_fac_num = as.numeric(pull(hw1_df, coerce_log_fac)) 
-  coerce_log_fac_num*pull(hw1_df, prob1_samp)
+coerce_log_fac = as.factor(pull(hw1_df, prob1_logic))
+  coerce_fac_num = as.numeric(coerce_log_fac)
+  coerce_fac_num*pull(hw1_df,  prob1_samp)
 ```
+Result: Get numeric variables
+
 
 #__Problem 2:__
-Here's a **code chunk** creating a new data frame:
+Here's a code chunk creating a new data frame:
 ```{r}
 prob2_df = tibble(
   x = rnorm(500),
@@ -72,9 +90,18 @@ prob2_df = tibble(
 )
 ```
 
-PASTE IN-LINE CODE BACK IN HERE:
 
-Here's a **code chunk** of a scatterplot for y vs. x with logical color points:
+
+Descriptive statistics of dataset "prob2_df":
+There are `r nrow(prob2_df)` rows and `r ncol(prob2_df)` columns in the dataset.
+The mean of x is `r mean(pull(prob2_df, x))`
+The median of the x is `r median(pull(prob2_df, x))`
+The standard deviation of the x is `r median(pull(prob2_df, x))`
+The proportion of cases f for which x + y >1 is `r sum(pull(prob2_df, prob2_logic= "true")/(nrow(prob2_df))`
+
+
+
+Here's a code chunk of a scatterplot for y vs. x with logical color points:
 ```{r}
 ggplot(prob2_df, aes(x = x, y = y)) + geom_point(aes (color = prob2_logic)) + labs(title ="X vs. Y by Logic Function x + y >1")
 ```
@@ -91,3 +118,4 @@ ggplot(prob2_df, aes(x = x, y = y)) + geom_point(aes (color = log_to_fac)) + lab
 ```
 
 Finally export the first scatterplot to the project directory using ggsave.
+
