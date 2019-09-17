@@ -1,0 +1,86 @@
+---
+title: "p8105_hw1_ll3255"
+author: "LML"
+date: "9/16/2019"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+```
+
+#Problem 1: 
+Here's a **code chunk** that samples from a normal distribution:
+```{r}
+hw1_df = tibble(
+  prob1_samp = rnorm(8),
+  prob1_positive = prob1_samp > 0,
+  prob1_logic = prob1_positive > 0,
+  prob1_char = c("one", "two", "three", "four", "five", "six", "seven", "eight"), 
+  prob1_factor = factor(prob1_char, levels = c("low", "moderate", "high")),
+)
+```
+
+Here's a **code chunk** that is attempting to take the mean of each variable in the data frame above:
+```{r}
+mean(pull(hw1_df, prob1_samp))
+```
+What works:
+What doesn't:
+
+Here's a **code chunk** is attempting to convert variable types:
+## Logical to numeric
+## Character to numeric
+## Factor to numeric
+```{r}
+coerce_log_num = as.numeric(pull(hw1_df, prob1_logic))
+coerce_char_num = as.numeric(pull(hw1_df, prob1_char))
+coerce_fac_num = as.numeric(pull(hw1_df, prob1_factor))
+```
+What happens and why:
+Does this explain what happenned to the mean before:
+
+Here's a second **code chunk** converting and manipulating the variables further:
+```{r}
+coerce_log_num*prob1_samp
+
+coerce_log_fac = as.factor(pull(hw1_df, prob1_logic))
+  coerce_log_fac*prob1_samp
+
+coerce_log_fac_num = as.numeric(pull(hw1_df, coerce_log_fac)) 
+  coerce_log_fac_num*prob1_samp
+```
+
+#Problem 2
+Here's a **code chunk** creating a new data frame:
+```{r}
+prob2_df = tibble(
+  x = rnorm(500),
+  y = rnorm(500),
+  prob2_logic = x + y > 1,
+  log_to_num = as.numeric(pull(prob2_df, prob2_logic)),
+  log_to_fac = as.factor(pull(prob2_df, prob2_logic))
+)
+```
+
+Descriptive statistics of dataset `prob2_df`:
+* There are `r nrow(prob2_df)` rows and `r ncol(prob2_df)` columns in the dataset.
+* The mean of x is `r mean(pulld(prob2_df, x))`
+* The median of the x is `r median(pull(prob2_df, x))`
+* The standard deviation of the x is `r median(pull(prob2_df, x))`
+* The proportion of cases f for which x + y >1 is `r median(pull(prob2_df, prob2_logic))`
+
+Here's a **code chunk** of a scatterplot for y vs. x with logical color points:
+```{r}
+ggplot(plot_df, aes(x = x, y = y)) + geom_point()
+```
+This one has numeric color points:
+```{r}
+ggplot(plot_df, aes(x = x, y = y)) + geom_point()
+```
+This one has factorr color points:
+```{r}
+ggplot(plot_df, aes(x = x, y = y)) + geom_point()
+```
+
+Finally export the first scatterplot to the project directory using ggsave.
