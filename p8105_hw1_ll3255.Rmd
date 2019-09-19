@@ -1,9 +1,137 @@
 ---
-title: "P8105_HW1_LL3255"
+title: "Data Science HW1"
 author: "Laura Lynch"
-date: 2019-09-16
-output: github_document
+date: "9/17/2019"
+output: html_document
 ---
-  
-Homework 1, R Markdown document for problem 0.1.
 
+```{r}
+library(tidyverse)
+```
+
+# __Problem 1:__ 
+
+## This dataframe is sampling from a normal distribution and includes numeric, character and factor varirables. 
+
+```{r}
+hw1_df = tibble(
+  prob1_samp = rnorm(8),
+  prob1_logic = prob1_samp > 0,
+  prob1_char = c("one", "two", "three", "four", "five", "six", "seven", "eight"), 
+  prob1_factor = factor(prob1_char, levels = c("low", "moderate", "high"))
+)
+```
+
+## The following code is attempting to calculate the mean for each variable in the dataframe.
+
+```{r}
+mean(pull(hw1_df, prob1_samp))
+mean(pull(hw1_df, prob1_logic))
+mean(pull(hw1_df, prob1_char))
+mean(pull(hw1_df, prob1_factor))
+```
+* The variable prob1_samp successfully produced a mean as it is a numeric variable.
+* The variable prob1_logic successfully produced a mean as it is a numeric variable.
+* The variable prob1_char is unable to calculate a mean as it is a character variable.
+* The variable prob1_factor is unable to calculate a mean as it is a factor variable.
+
+## Here the variables are being coerced into different variable types.
+
+* The locical vector here is converted to a numeric variable.
+
+```{r, eval = FALSE}
+coerce_log_num = as.numeric(pull(hw1_df, prob1_logic))
+```
+
+Results: The original logic variables (ie. TRUE, FALSE) were converted into binary numeric variables 1 and 0.
+
+* The character vector here is converted to a numeric variable.
+
+```{r, eval = FALSE}
+coerce_char_num = as.numeric(pull(hw1_df, prob1_char))
+```
+
+Results: The original character variables were not converted into numeric variables, instead the error "NAs introduced by coercion" appeared since character do not logically lend themselves to corresponding numeric variables.
+
+*  The logical variable here is converted to a numeric variable.
+
+```{r, eval = FALSE}
+coerce_fac_num = as.numeric(pull(hw1_df, prob1_factor))
+```
+
+Results: The original logical variables did not make the transformation into numeric variables, instead the error "NAs introduced by coercion" appeared again as R cannot transform factor  
+
+* This exercise demonstrated that only numeric variables can be used for arithmatic operations, not character and factor variables which is why only the numeric variables in the previous code chunk produced means.
+
+
+## Here's a second code chunk converting and manipulating the coerced variables further:
+
+* First converting the logical vector to numeric and multiplying the result by the random sample in the data frame.
+
+```{r, eval = FALSE}
+coerce_log_num*pull(hw1_df, prob1_samp)
+```
+
+Results: The coercion and multiplication produced meaningful results.
+
+* Second converting the logical vector to a factor and multiplying the result by the random sample in the data frame.
+
+```{r, eval = FALSE}
+coerce_log_fac = as.factor(pull(hw1_df, prob1_logic))
+    coerce_log_fac*pull(hw1_df, prob1_samp)
+```
+
+Results: The manipulations were unsuccessful producing the error "not meaningful factors" and converting all the rows to NA which makes sense since the coercion component is not possible in R.
+
+* Third converting the logical vector to a factor and then to numeric and multiplying the result by the random sample in the data frame.
+
+```{r, eval = FALSE}
+coerce_log_fac = as.factor(pull(hw1_df, prob1_logic))
+    coerce_fac_num = as.numeric(coerce_log_fac)
+        coerce_fac_num*pull(hw1_df,  prob1_samp)
+```
+
+Results:  The coercion and multiplication produced meaningful results.
+
+
+# __Problem 2:__
+
+## The following new dataframe creates a new set of variables.
+
+```{r}
+prob2_df = tibble(
+  x = rnorm(500),
+  y = rnorm(500),
+  prob2_logic = x + y > 1,
+  log_to_num = as.numeric(prob2_logic),
+  log_to_fac = as.factor(prob2_logic)
+)
+```
+
+### Descriptive statistics of the new dataset `prob2_df`:
+* There are `r nrow(prob2_df)` rows and `r ncol(prob2_df)` columns in the dataset.
+* The mean of x is `r mean(pull(prob2_df, x))`.
+* The median of the x is `r median(pull(prob2_df, x))`. 
+* The standard deviation of the x is `r median(pull(prob2_df, x))`.
+* The proportion of cases f for which x + y >1 is `r sum(pull(prob2_df, log_to_num))/(nrow(prob2_df))`.
+
+## The final section will create scatterplots with the new dataframe.
+
+* The first scatterplot graphs y against x and colors points according to the logical variable. The red dots are `FALSE` meaning they are less than or equal to 1 and the blue dots are `TRUE` meaning they are greater than one. This graph includes extra code in order to be exported to the project directory.
+
+```{r}
+ggplot(prob2_df, aes(x = x, y = y)) + geom_point(aes (color = prob2_logic)) + labs(title ="X vs. Y by Logic Function x + y >1")
+  ggsave("logic_plot.png", width = 5, height = 5)
+```
+
+* The second scatterplot graphs y against x and colors points according to the numeric variable. The black dots are 0 and the blue dots are 1.
+
+```{r}
+ggplot(prob2_df, aes(x = x, y = y)) + geom_point(aes (color = log_to_num)) + labs(title ="X vs. Y by Numeric Variable")
+```
+
+* The third scatterplot graphs y against x and colors points according to the factor variable. The red dots are `FALSE` and the blue dots are `TRUE`.
+
+```{r}
+ggplot(prob2_df, aes(x = x, y = y)) + geom_point(aes (color = log_to_fac)) + labs(title ="X vs. Y by Factor Variable")
+```
