@@ -2,7 +2,7 @@
 title: "Data Science HW1"
 author: "Laura Lynch"
 date: "9/17/2019"
-output: html_document
+output: github_document
 ---
 
 ```{r}
